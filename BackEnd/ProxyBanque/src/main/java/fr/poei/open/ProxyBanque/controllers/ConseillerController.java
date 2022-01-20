@@ -97,9 +97,20 @@ public class ConseillerController {
     @Transactional
     public ResponseEntity<?>  supprimerConseiller(@PathVariable("id") String id){
         if(id.matches(regexInteger)){
-            Boolean resultat = conseillerService.supprimerConseiller(Long.parseLong(id));
+            Boolean resultat = conseillerService.verificationSiIdExiste(Long.parseLong(id));
             if (resultat){
-                return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto("L'entité avec l'id : "+id+" a été supprimée avec succès"));
+                Boolean controlList = conseillerService.verifieTailleListClientNull(Long.parseLong(id));
+                if(controlList){
+                    Boolean suppression = conseillerService.supprimerConseiller(Long.parseLong(id));
+                    if (suppression){
+                        return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto("L'entité avec l'id : "+id+" a été supprimée avec succès"));
+                    }else {
+                        return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Une erreur une survenue !"));
+                    }
+                }else{
+                    return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Impossible de supprimer le conseiller. \nAssurez-vous d'avoir désassigné tous ses clients avant sa suppression"));
+                }
+
             }else{
                 return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("L'entité avec l'id: "+id+" n'existe pas"));
             }

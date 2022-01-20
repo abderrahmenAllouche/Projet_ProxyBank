@@ -124,14 +124,9 @@ public class ConseillerService {
         Boolean resultat = conseillerRepository.existsById(id);
         if(resultat){
             Optional<Conseiller> conseiller = conseillerRepository.findById(id);
-            if(conseiller.get().getClients().size()==0){
+
                 conseillerRepository.deleteById(id);
-            }else{
-                while(conseiller.get().getClients().size()!=0){
-                        desassigneClientConseiller(conseiller.get().getClients().get(0).getId(), conseiller.get().getId());
-                }
-                conseillerRepository.deleteById(id);
-            }
+
             resultat = conseillerRepository.existsById(id);
             if (!resultat){
                 return true;
@@ -139,6 +134,15 @@ public class ConseillerService {
                 return false;
             }
         }else {
+            return false;
+        }
+    }
+
+    public boolean verifieTailleListClientNull(Long id){
+        Optional<Conseiller> conseiller = conseillerRepository.findById(id);
+        if(conseiller.get().getClients().size()==0){
+            return true;
+        }else{
             return false;
         }
     }
@@ -175,16 +179,6 @@ public class ConseillerService {
         Optional<Conseiller> optionalConseiller = conseillerRepository.findById(id);
         if(optionalConseiller.isPresent()){
             optionalConseiller.get().setNom(conseillerDto.get().getNom());
-            if(conseillerDto.get().getGerant_id()==null){
-                optionalConseiller.get().setGerant(null);
-            }else{
-                if(gerantRepository.existsById(conseillerDto.get().getGerant_id())) {
-                    Optional<Gerant> gerant = gerantRepository.findById(conseillerDto.get().getGerant_id());
-                    optionalConseiller.get().setGerant(gerant.get());
-                }else{
-                    return false;
-                }
-            }
             conseillerRepository.save(optionalConseiller.get());
             return true;
         }else{
