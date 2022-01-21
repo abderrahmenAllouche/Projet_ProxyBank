@@ -1,0 +1,3 @@
+[submodule "Front/Front/ProxyBank_Front"]
+	path = Front/Front/ProxyBank_Front
+	url = https://github.com/abderrahmenAllouche/Projet_ProxyBank.git
