@@ -14,9 +14,8 @@ public class Conseiller {
     private Long id;
 
     private String nom;
-
-    @OneToMany(mappedBy = "conseiller")
     @JsonIgnore
+    @OneToMany(mappedBy = "conseiller")
     private List<Client> clients =new ArrayList<>();
 
     @ManyToOne

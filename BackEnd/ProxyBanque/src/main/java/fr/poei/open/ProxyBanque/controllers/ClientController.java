@@ -2,31 +2,19 @@ package fr.poei.open.ProxyBanque.controllers;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import fr.poei.open.ProxyBanque.dtos.CarteBancaireDto;
-import fr.poei.open.ProxyBanque.dtos.ClientDto;
-import fr.poei.open.ProxyBanque.dtos.CompteCourantDto;
-import fr.poei.open.ProxyBanque.dtos.CompteEpargneDto;
-import fr.poei.open.ProxyBanque.dtos.ResponseBodyDto;
+import fr.poei.open.ProxyBanque.dtos.*;
 import fr.poei.open.ProxyBanque.services.CarteBancaireService;
 import fr.poei.open.ProxyBanque.services.ClientService;
 import fr.poei.open.ProxyBanque.services.CompteCourantService;
 import fr.poei.open.ProxyBanque.services.CompteEpargneService;
 import fr.poei.open.ProxyBanque.services.CompteService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/ProxyBank")
 public class ClientController {

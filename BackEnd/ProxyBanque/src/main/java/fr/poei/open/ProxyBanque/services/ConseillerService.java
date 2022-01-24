@@ -124,9 +124,9 @@ public class ConseillerService {
         Boolean resultat = conseillerRepository.existsById(id);
         if(resultat){
             Optional<Conseiller> conseiller = conseillerRepository.findById(id);
-
+           
                 conseillerRepository.deleteById(id);
-
+           
             resultat = conseillerRepository.existsById(id);
             if (!resultat){
                 return true;
@@ -146,7 +146,7 @@ public class ConseillerService {
             return false;
         }
     }
-
+    
     public Optional<ConseillerDto> findConseillerById(Long id){
         Optional<Conseiller> optionalConseiller=conseillerRepository.findById(id);
         if(optionalConseiller.isPresent()){
@@ -179,6 +179,7 @@ public class ConseillerService {
         Optional<Conseiller> optionalConseiller = conseillerRepository.findById(id);
         if(optionalConseiller.isPresent()){
             optionalConseiller.get().setNom(conseillerDto.get().getNom());
+           
             conseillerRepository.save(optionalConseiller.get());
             return true;
         }else{
