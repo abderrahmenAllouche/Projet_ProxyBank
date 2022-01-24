@@ -1,6 +1,4 @@
-package fr.poei.open.ProxyBanque.dtos;
-
-import fr.poei.open.ProxyBanque.entities.Conseiller;
+package fr.poei.open.proxybanque.dtos;
 
 public class ClientVM {
     private Long id;

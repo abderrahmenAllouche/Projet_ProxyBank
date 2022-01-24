@@ -1,6 +1,4 @@
-package fr.poei.open.ProxyBanque.entities;
-
-import java.util.List;
+package fr.poei.open.proxybanque.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

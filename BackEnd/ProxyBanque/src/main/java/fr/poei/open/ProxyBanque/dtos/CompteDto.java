@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque.dtos;
+package fr.poei.open.proxybanque.dtos;
 
 public class CompteDto {
 }

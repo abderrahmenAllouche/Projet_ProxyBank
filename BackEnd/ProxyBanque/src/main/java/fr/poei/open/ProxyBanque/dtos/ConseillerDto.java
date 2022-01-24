@@ -1,7 +1,4 @@
-package fr.poei.open.ProxyBanque.dtos;
-
-import fr.poei.open.ProxyBanque.entities.Client;
-import fr.poei.open.ProxyBanque.entities.Gerant;
+package fr.poei.open.proxybanque.dtos;
 
 import java.util.ArrayList;
 import java.util.List;

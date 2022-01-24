@@ -1,21 +1,22 @@
-package fr.poei.open.ProxyBanque.services;
+package fr.poei.open.proxybanque.services;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.poei.open.proxybanque.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.poei.open.ProxyBanque.dtos.ConseillerDto;
-import fr.poei.open.ProxyBanque.dtos.ConseillerVM;
-import fr.poei.open.ProxyBanque.dtos.GerantDtos;
-import fr.poei.open.ProxyBanque.entities.Agence;
-import fr.poei.open.ProxyBanque.entities.Conseiller;
-import fr.poei.open.ProxyBanque.entities.Gerant;
-import fr.poei.open.ProxyBanque.repositories.AgenceRepository;
-import fr.poei.open.ProxyBanque.repositories.ConseillerRepository;
-import fr.poei.open.ProxyBanque.repositories.GerantRepository;
+import fr.poei.open.proxybanque.dtos.ConseillerDto;
+import fr.poei.open.proxybanque.dtos.ConseillerVM;
+import fr.poei.open.proxybanque.dtos.GerantDtos;
+import fr.poei.open.proxybanque.entities.Agence;
+import fr.poei.open.proxybanque.entities.Conseiller;
+import fr.poei.open.proxybanque.entities.Gerant;
+import fr.poei.open.proxybanque.repositories.AgenceRepository;
+import fr.poei.open.proxybanque.repositories.ConseillerRepository;
+import fr.poei.open.proxybanque.repositories.GerantRepository;
 
 @Service
 public class GerantService {
@@ -30,6 +31,8 @@ public class GerantService {
     AgenceRepository agenceRepository;
     @Autowired
     AgenceService agenceService;
+    @Autowired
+    UtilisateurRepository utilisateurRepository;
 
     public Optional<List<GerantDtos>> findAllGerant() {
         List<GerantDtos> listGerantDtos = new ArrayList<>();
@@ -90,11 +93,7 @@ public class GerantService {
         }
         if (optionalGerant.isPresent()) {
             optionalGerant = Optional.of(gerantRepository.save(optionalGerant.get()));
-            if (gerantRepository.findById(optionalGerant.get().getId()).isPresent()) {
-                return true;
-            } else {
-                return false;
-            }
+            return gerantRepository.findById(optionalGerant.get().getId()).isPresent();
         } else {
             return false;
         }
@@ -111,23 +110,19 @@ public class GerantService {
             }
         }
         if(optionalGerant.get().getConseillers().size()!=0){
-                for (Conseiller conseiller : optionalGerant.get().getConseillers()) {
-                    desassigneConseillerGerant(conseiller.getId(), optionalGerant.get().getId());
-                    if(optionalGerant.get().getConseillers().size()==0){
-                        break;
-                    }
+            for (Conseiller conseiller : optionalGerant.get().getConseillers()) {
+                desassigneConseillerGerant(conseiller.getId(), optionalGerant.get().getId());
+                if(optionalGerant.get().getConseillers().size()==0){
+                    break;
                 }
+            }
         }
 
         Boolean resultat = gerantRepository.existsById(id);
         if (resultat) {
             gerantRepository.deleteById(id);
             resultat = gerantRepository.existsById(id);
-            if (!resultat) {
-                return true;
-            } else {
-                return false;
-            }
+            return !resultat;
         } else {
             return false;
         }
@@ -216,16 +211,17 @@ public class GerantService {
         return gerantRepository.existsById(id);
     }
 
-    public List<ConseillerVM> findConseillersByGerantId(Integer id) {
-        Optional<List<ConseillerVM>> listconseillerVM = Optional.of(new ArrayList<ConseillerVM>());
+    public List<ConseillerDto> findConseillersByGerantId(Integer id) {
+        Optional<List<ConseillerDto>> listconseillerVDto = Optional.of(new ArrayList<ConseillerDto>());
         Optional<Gerant> gerant = gerantRepository.findById(id);
         if (gerant.isEmpty()) {
             return new ArrayList<>();
         } else {
             for (Conseiller conseiller : gerant.get().getConseillers()) {
-                listconseillerVM.get().add(new ConseillerVM(conseiller.getId(), conseiller.getNom(), conseiller.getGerant().getId()));
+                Optional<ConseillerDto> optionalOonseillerDto = conseillerService.findConseillerById(conseiller.getId());
+                listconseillerVDto.get().add(optionalOonseillerDto.get());
             }
-            return listconseillerVM.get();
+            return listconseillerVDto.get();
         }
     }
 
@@ -289,4 +285,10 @@ public class GerantService {
         return Optional.empty();
     }
 
+
+    public Optional<GerantDtos> findGerantByUtilisateurId(String idUtilisateur) {
+        Optional<Gerant> optionalGerant = this.gerantRepository.findGerantByUtilisateur(this.utilisateurRepository.findById(Integer.parseInt(idUtilisateur)).get());
+        Optional<GerantDtos> gerantDto = Optional.of(new GerantDtos(optionalGerant.get().getId(), optionalGerant.get().getNom(), null, null));
+        return gerantDto;
+    }
 }

@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque.entities;
+package fr.poei.open.proxybanque.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -14,21 +14,33 @@ public class Conseiller {
     private Long id;
 
     private String nom;
-    @JsonIgnore
+
     @OneToMany(mappedBy = "conseiller")
+    @JsonIgnore
     private List<Client> clients =new ArrayList<>();
 
     @ManyToOne
     @JsonIgnore
     private Gerant gerant;
+    @OneToOne
+    private Utilisateur utilisateur;
 
     public Conseiller() {
     }
 
-    public Conseiller(String nom, List<Client> clients, Gerant gerant) {
+    public Conseiller(String nom, List<Client> clients, Gerant gerant, Utilisateur utilisateur) {
         this.nom = nom;
         this.clients = clients;
         this.gerant = gerant;
+        this.utilisateur = utilisateur;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     public Conseiller(String nom, Gerant gerant) {

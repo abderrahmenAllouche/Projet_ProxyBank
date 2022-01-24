@@ -1,9 +1,8 @@
-package fr.poei.open.ProxyBanque.dtos;
+package fr.poei.open.proxybanque.dtos;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-import fr.poei.open.ProxyBanque.entities.Gerant;
+import fr.poei.open.proxybanque.entities.Gerant;
 
 public class AgenceDtos {
     private Integer id;

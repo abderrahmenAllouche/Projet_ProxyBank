@@ -1,13 +1,11 @@
-package fr.poei.open.ProxyBanque.entities;
+package fr.poei.open.proxybanque.entities;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Gerant {
@@ -15,14 +13,25 @@ public class Gerant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nom;
+    @OneToOne
+    private Utilisateur utilisateur;
 
     @OneToMany(mappedBy = "gerant")
     private List<Conseiller> Conseillers = new ArrayList<>();
 
-    public Gerant(String nom, List<Conseiller> conseillers) {
+    public Gerant(String nom, List<Conseiller> conseillers, Utilisateur utilisateur) {
         super();
         this.nom = nom;
         this.Conseillers = conseillers;
+        this.utilisateur = utilisateur;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     public Gerant() {

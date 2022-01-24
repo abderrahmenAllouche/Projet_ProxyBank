@@ -1,12 +1,13 @@
-package fr.poei.open.ProxyBanque.services;
+package fr.poei.open.proxybanque.services;
 
-import fr.poei.open.ProxyBanque.dtos.*;
-import fr.poei.open.ProxyBanque.entities.Client;
-import fr.poei.open.ProxyBanque.entities.Conseiller;
-import fr.poei.open.ProxyBanque.entities.Gerant;
-import fr.poei.open.ProxyBanque.repositories.ClientRepository;
-import fr.poei.open.ProxyBanque.repositories.ConseillerRepository;
-import fr.poei.open.ProxyBanque.repositories.GerantRepository;
+import fr.poei.open.proxybanque.dtos.*;
+import fr.poei.open.proxybanque.entities.Client;
+import fr.poei.open.proxybanque.entities.Conseiller;
+import fr.poei.open.proxybanque.entities.Gerant;
+import fr.poei.open.proxybanque.repositories.ClientRepository;
+import fr.poei.open.proxybanque.repositories.ConseillerRepository;
+import fr.poei.open.proxybanque.repositories.GerantRepository;
+import fr.poei.open.proxybanque.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ public class ConseillerService {
 
     @Autowired
     ClientService clienService;
+
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
 
 
     public Optional<List<ConseillerDto>> findAllConseiller(){
@@ -257,5 +261,11 @@ public class ConseillerService {
         }
 
         return Optional.of(listconseillerDisponible);
+    }
+
+    public Optional<ConseillerVM> findConseillerByUtilisateurId(String idUtilisateur) {
+        Optional<Conseiller> optionalConseiller = this.conseillerRepository.findConseillerByUtilisateur(this.utilisateurRepository.findById(Integer.parseInt(idUtilisateur)).get());
+        Optional<ConseillerVM> conseillerVM = Optional.of(new ConseillerVM(optionalConseiller.get().getId(), optionalConseiller.get().getNom(), null));
+        return conseillerVM;
     }
 }

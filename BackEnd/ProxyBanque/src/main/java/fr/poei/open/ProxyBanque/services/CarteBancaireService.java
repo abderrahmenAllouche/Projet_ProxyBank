@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque.services;
+package fr.poei.open.proxybanque.services;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -7,16 +7,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.poei.open.ProxyBanque.dtos.CarteBancaireDto;
-import fr.poei.open.ProxyBanque.dtos.ClientDto;
-import fr.poei.open.ProxyBanque.dtos.CompteEpargneDto;
-import fr.poei.open.ProxyBanque.entities.CarteBancaire;
-import fr.poei.open.ProxyBanque.entities.CarteElectron;
-import fr.poei.open.ProxyBanque.entities.CarteVisa;
-import fr.poei.open.ProxyBanque.entities.Client;
-import fr.poei.open.ProxyBanque.entities.CompteEpargne;
-import fr.poei.open.ProxyBanque.repositories.CarteBancaireRepository;
-import fr.poei.open.ProxyBanque.repositories.ClientRepository;
+import fr.poei.open.proxybanque.dtos.CarteBancaireDto;
+import fr.poei.open.proxybanque.dtos.ClientDto;
+import fr.poei.open.proxybanque.entities.CarteBancaire;
+import fr.poei.open.proxybanque.entities.CarteElectron;
+import fr.poei.open.proxybanque.entities.CarteVisa;
+import fr.poei.open.proxybanque.entities.Client;
+import fr.poei.open.proxybanque.repositories.CarteBancaireRepository;
+import fr.poei.open.proxybanque.repositories.ClientRepository;
 
 @Service
 public class CarteBancaireService {

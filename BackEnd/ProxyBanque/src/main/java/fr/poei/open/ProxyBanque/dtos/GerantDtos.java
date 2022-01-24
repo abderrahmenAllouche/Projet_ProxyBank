@@ -1,9 +1,7 @@
-package fr.poei.open.ProxyBanque.dtos;
+package fr.poei.open.proxybanque.dtos;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import fr.poei.open.ProxyBanque.entities.Conseiller;
 
 public class GerantDtos {
     private Integer id;

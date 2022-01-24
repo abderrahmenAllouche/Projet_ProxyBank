@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque.services;
+package fr.poei.open.proxybanque.services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -8,14 +8,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.poei.open.ProxyBanque.dtos.AgenceDtos;
-import fr.poei.open.ProxyBanque.dtos.ClientSoldeVM;
-import fr.poei.open.ProxyBanque.entities.Agence;
-import fr.poei.open.ProxyBanque.entities.Client;
-import fr.poei.open.ProxyBanque.entities.Conseiller;
-import fr.poei.open.ProxyBanque.entities.Gerant;
-import fr.poei.open.ProxyBanque.repositories.AgenceRepository;
-import fr.poei.open.ProxyBanque.repositories.GerantRepository;
+import fr.poei.open.proxybanque.dtos.AgenceDtos;
+import fr.poei.open.proxybanque.dtos.ClientSoldeVM;
+import fr.poei.open.proxybanque.entities.Agence;
+import fr.poei.open.proxybanque.entities.Client;
+import fr.poei.open.proxybanque.entities.Conseiller;
+import fr.poei.open.proxybanque.entities.Gerant;
+import fr.poei.open.proxybanque.repositories.AgenceRepository;
+import fr.poei.open.proxybanque.repositories.GerantRepository;
 
 @Service
 public class AgenceService {

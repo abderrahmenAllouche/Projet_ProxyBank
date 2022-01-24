@@ -1,10 +1,10 @@
-package fr.poei.open.ProxyBanque.dtos;
+package fr.poei.open.proxybanque.dtos;
 
-import fr.poei.open.ProxyBanque.entities.CarteElectron;
-import fr.poei.open.ProxyBanque.entities.CarteVisa;
-import fr.poei.open.ProxyBanque.entities.CompteCourant;
-import fr.poei.open.ProxyBanque.entities.CompteEpargne;
-import fr.poei.open.ProxyBanque.entities.Conseiller;
+import fr.poei.open.proxybanque.entities.CarteElectron;
+import fr.poei.open.proxybanque.entities.CarteVisa;
+import fr.poei.open.proxybanque.entities.CompteCourant;
+import fr.poei.open.proxybanque.entities.CompteEpargne;
+import fr.poei.open.proxybanque.entities.Conseiller;
 
 public class ClientDto {
     private Long id;

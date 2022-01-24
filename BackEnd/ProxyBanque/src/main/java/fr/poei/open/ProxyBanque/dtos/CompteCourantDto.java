@@ -1,8 +1,8 @@
-package fr.poei.open.ProxyBanque.dtos;
+package fr.poei.open.proxybanque.dtos;
 
 import java.time.LocalDate;
 
-import fr.poei.open.ProxyBanque.entities.Client;
+import fr.poei.open.proxybanque.entities.Client;
 
 public class CompteCourantDto {
 

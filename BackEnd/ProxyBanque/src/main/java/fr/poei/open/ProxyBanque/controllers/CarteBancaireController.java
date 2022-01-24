@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque.controllers;
+package fr.poei.open.proxybanque.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.poei.open.ProxyBanque.entities.CarteBancaire;
-import fr.poei.open.ProxyBanque.services.CarteBancaireService;
-import fr.poei.open.ProxyBanque.services.ClientService;
+import fr.poei.open.proxybanque.entities.CarteBancaire;
+import fr.poei.open.proxybanque.services.CarteBancaireService;
+import fr.poei.open.proxybanque.services.ClientService;
 
 @RestController
 @RequestMapping("/ProxyBank")

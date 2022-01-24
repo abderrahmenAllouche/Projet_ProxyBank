@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque.services;
+package fr.poei.open.proxybanque.services;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -7,10 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.poei.open.ProxyBanque.dtos.CompteCourantDto;
-import fr.poei.open.ProxyBanque.entities.Client;
-import fr.poei.open.ProxyBanque.entities.CompteCourant;
-import fr.poei.open.ProxyBanque.repositories.CompteCourantRepository;
+import fr.poei.open.proxybanque.dtos.CompteCourantDto;
+import fr.poei.open.proxybanque.entities.Client;
+import fr.poei.open.proxybanque.entities.CompteCourant;
+import fr.poei.open.proxybanque.repositories.CompteCourantRepository;
 
 @Service
 public class CompteCourantService {

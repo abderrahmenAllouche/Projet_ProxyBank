@@ -1,14 +1,15 @@
-package fr.poei.open.ProxyBanque.controllers;
+package fr.poei.open.proxybanque.controllers;
 
-import fr.poei.open.ProxyBanque.dtos.ClientVM;
-import fr.poei.open.ProxyBanque.dtos.ConseillerDto;
-import fr.poei.open.ProxyBanque.dtos.ResponseBodyDto;
-import fr.poei.open.ProxyBanque.services.ClientService;
-import fr.poei.open.ProxyBanque.services.ConseillerService;
-import fr.poei.open.ProxyBanque.services.GerantService;
+import fr.poei.open.proxybanque.dtos.ClientVM;
+import fr.poei.open.proxybanque.dtos.ConseillerDto;
+import fr.poei.open.proxybanque.dtos.ResponseBodyDto;
+import fr.poei.open.proxybanque.services.ClientService;
+import fr.poei.open.proxybanque.services.ConseillerService;
+import fr.poei.open.proxybanque.services.GerantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -31,6 +32,7 @@ public class ConseillerController {
     @Autowired
     GerantService gerantService;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/conseiller")
     @ResponseBody
     public ResponseEntity<?> findAllConseiller(){
@@ -46,6 +48,7 @@ public class ConseillerController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
     @GetMapping("/conseiller/disponible/{id}")
     @ResponseBody
     public ResponseEntity<?> findConseillerDisponible(@PathVariable("id") String id){
@@ -69,6 +72,7 @@ public class ConseillerController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
     @PostMapping("/conseiller")
     public ResponseEntity<?> creerConseiller(@RequestBody ConseillerDto conseillerDto){
         if(conseillerDto.getId()==null) {
@@ -93,6 +97,7 @@ public class ConseillerController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
     @DeleteMapping("/conseiller/{id}")
     @Transactional
     public ResponseEntity<?>  supprimerConseiller(@PathVariable("id") String id){
@@ -119,6 +124,7 @@ public class ConseillerController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
     @GetMapping("/conseiller/{id}")
     @ResponseBody
     public ResponseEntity<?> findConseillerById(@PathVariable("id") String id){
@@ -134,6 +140,7 @@ public class ConseillerController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
     @PutMapping("/conseiller/{id}")
     @ResponseBody
     public ResponseEntity<?> updateConseiller(@RequestBody ConseillerDto conseillerDto,@PathVariable("id") String id){
@@ -153,6 +160,7 @@ public class ConseillerController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('CONSEILLER', 'GERANT','ADMIN')")
     @GetMapping("/conseiller/{id}/clients")
     @ResponseBody
     public ResponseEntity<?> findClientsByConseillerId(@PathVariable("id") String id){
@@ -176,6 +184,7 @@ public class ConseillerController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
     @PutMapping("/conseiller/{id_conseiller}/client/{id_client}")
     @ResponseBody
     public ResponseEntity<?> assignerConseiller(@PathVariable("id_conseiller") String id_conseiller, @PathVariable("id_client") String id_client){
@@ -199,6 +208,7 @@ public class ConseillerController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
     @DeleteMapping("/conseiller/{id_conseiller}/client/{id_client}")
     @ResponseBody
     public ResponseEntity<?> desassignerConseiller(@PathVariable("id_conseiller") String id_conseiller, @PathVariable("id_client") String id_client){
@@ -222,6 +232,7 @@ public class ConseillerController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('CONSEILLER', 'GERANT','ADMIN')")
     @GetMapping("/conseiller/{id_conseiller}/client/{id_client}")
     @ResponseBody
     public ResponseEntity<?> findClientIDByConseillerID(@PathVariable("id_conseiller") String id_conseiller, @PathVariable("id_client") String id_client){
@@ -249,7 +260,11 @@ public class ConseillerController {
         }
     }
 
-
+    @PreAuthorize("hasAnyAuthority('CONSEILLER', 'GERANT','ADMIN')")
+    @GetMapping("/conseiller/utilisateur/{id_utilisateur}")
+    public ResponseEntity<?> findConseillerByUtilisateur(@PathVariable("id_utilisateur") String id_utilisateur) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.conseillerService.findConseillerByUtilisateurId(id_utilisateur).get());
+    }
 
 
 

@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque;
+package fr.poei.open.proxybanque;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

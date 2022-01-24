@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque.controllers;
+package fr.poei.open.proxybanque.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import fr.poei.open.ProxyBanque.dtos.*;
-import fr.poei.open.ProxyBanque.services.CarteBancaireService;
-import fr.poei.open.ProxyBanque.services.ClientService;
-import fr.poei.open.ProxyBanque.services.CompteCourantService;
-import fr.poei.open.ProxyBanque.services.CompteEpargneService;
-import fr.poei.open.ProxyBanque.services.CompteService;
+import fr.poei.open.proxybanque.dtos.*;
+import fr.poei.open.proxybanque.services.CarteBancaireService;
+import fr.poei.open.proxybanque.services.ClientService;
+import fr.poei.open.proxybanque.services.CompteCourantService;
+import fr.poei.open.proxybanque.services.CompteEpargneService;
+import fr.poei.open.proxybanque.services.CompteService;
 
 @CrossOrigin
 @RestController

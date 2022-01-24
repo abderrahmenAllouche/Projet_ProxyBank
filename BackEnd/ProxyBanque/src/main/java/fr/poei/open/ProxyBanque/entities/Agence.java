@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque.entities;
+package fr.poei.open.proxybanque.entities;
 
 import java.time.LocalDate;
 import javax.persistence.Entity;

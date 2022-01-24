@@ -1,29 +1,25 @@
-package fr.poei.open.ProxyBanque.controllers;
+package fr.poei.open.proxybanque.controllers;
 
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+
+import fr.poei.open.proxybanque.dtos.ConseillerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import fr.poei.open.ProxyBanque.dtos.ConseillerVM;
-import fr.poei.open.ProxyBanque.dtos.GerantDtos;
-import fr.poei.open.ProxyBanque.dtos.ResponseBodyDto;
-import fr.poei.open.ProxyBanque.services.AgenceService;
-import fr.poei.open.ProxyBanque.services.ConseillerService;
-import fr.poei.open.ProxyBanque.services.GerantService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import fr.poei.open.proxybanque.dtos.ConseillerVM;
+import fr.poei.open.proxybanque.dtos.GerantDtos;
+import fr.poei.open.proxybanque.dtos.ResponseBodyDto;
+import fr.poei.open.proxybanque.services.AgenceService;
+import fr.poei.open.proxybanque.services.ConseillerService;
+import fr.poei.open.proxybanque.services.GerantService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/ProxyBank")
 public class GerantController {
     private String regexInteger = "[0-9]+";
@@ -117,12 +113,13 @@ public class GerantController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
     @GetMapping("/gerant/{id}/conseillers")
     @ResponseBody
     public ResponseEntity<?> findConseillersByGerantId(@PathVariable("id") String id) {
         if (id.matches(regexInteger)) {
             if (gerantService.verificationSiIdExiste(Integer.parseInt(id))) {
-                Optional<List<ConseillerVM>> optionalConseillerDtoListByGerantId = Optional.of(gerantService.findConseillersByGerantId(Integer.parseInt(id)));
+                Optional<List<ConseillerDto>> optionalConseillerDtoListByGerantId = Optional.of(gerantService.findConseillersByGerantId(Integer.parseInt(id)));
                 if (optionalConseillerDtoListByGerantId.isPresent()) {
                     if (optionalConseillerDtoListByGerantId.get().isEmpty()) {
                         return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto("Ce gerant n'a aucun conseillers à sa charge"));
@@ -239,6 +236,7 @@ public class GerantController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
     @GetMapping("/gerant/{id_gerant}/conseiller/{id_conseiller}")
     @ResponseBody
     public ResponseEntity<?> findConseillerIDByGerantID(@PathVariable("id_gerant") String id_gerant, @PathVariable("id_conseiller") String id_conseiller) {
@@ -266,6 +264,11 @@ public class GerantController {
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('GERANT','ADMIN')")
+    @GetMapping("/gerant/utilisateur/{id_utilisateur}")
+    public ResponseEntity<?> findGerantByUtilisateur(@PathVariable("id_utilisateur") String id_utilisateur) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.gerantService.findGerantByUtilisateurId(id_utilisateur).get());
+    }
 
 }
 

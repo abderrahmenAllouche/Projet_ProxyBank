@@ -1,14 +1,14 @@
-package fr.poei.open.ProxyBanque.services;
+package fr.poei.open.proxybanque.services;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.poei.open.ProxyBanque.dtos.CompteCourantDto;
-import fr.poei.open.ProxyBanque.dtos.CompteEpargneDto;
-import fr.poei.open.ProxyBanque.entities.Compte;
-import fr.poei.open.ProxyBanque.repositories.CompteRepository;
+import fr.poei.open.proxybanque.dtos.CompteCourantDto;
+import fr.poei.open.proxybanque.dtos.CompteEpargneDto;
+import fr.poei.open.proxybanque.entities.Compte;
+import fr.poei.open.proxybanque.repositories.CompteRepository;
 
 @Service
 public class CompteService {

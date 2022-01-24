@@ -1,4 +1,4 @@
-package fr.poei.open.ProxyBanque.services;
+package fr.poei.open.proxybanque.services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import fr.poei.open.ProxyBanque.dtos.ClientDto;
-import fr.poei.open.ProxyBanque.dtos.CompteEpargneDto;
-import fr.poei.open.ProxyBanque.entities.Client;
-import fr.poei.open.ProxyBanque.entities.CompteEpargne;
-import fr.poei.open.ProxyBanque.repositories.ClientRepository;
-import fr.poei.open.ProxyBanque.repositories.CompteEpargneRepository;
+import fr.poei.open.proxybanque.dtos.ClientDto;
+import fr.poei.open.proxybanque.dtos.CompteEpargneDto;
+import fr.poei.open.proxybanque.entities.Client;
+import fr.poei.open.proxybanque.entities.CompteEpargne;
+import fr.poei.open.proxybanque.repositories.ClientRepository;
+import fr.poei.open.proxybanque.repositories.CompteEpargneRepository;
 
 @Service
 public class CompteEpargneService {
