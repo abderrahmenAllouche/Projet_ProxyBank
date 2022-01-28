@@ -4,21 +4,25 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class CarteVisa  extends CarteBancaire  {
 
+	@JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     private Client client;
 
     private String typeCarte = "carte_Visa";
-    private String numCarte;
 
     public CarteVisa() {
+    	
         super();
     }
 
     public CarteVisa(String typeCarte, Client client) {
-        super(client);
+    
+        this.client = client;
         this.typeCarte = typeCarte;
     }
 
@@ -30,13 +34,7 @@ public class CarteVisa  extends CarteBancaire  {
         this.typeCarte = typeCarte;
     }
 
-    public String getNumCarte() {
-        return numCarte;
-    }
-
-    public void setNumCarte(String numCompte) {
-        this.numCarte = numCompte;
-    }
+   
 
     public Client getClient() {
         return client;
@@ -44,7 +42,7 @@ public class CarteVisa  extends CarteBancaire  {
 
     @Override
     public String toString() {
-        return "CarteVisa [client=" + client + ", typeCarte=" + typeCarte + ", numCarte=" + numCarte + "]";
+        return "CarteVisa [client=" + client + ", typeCarte=" + typeCarte + "]";
     }
 
 

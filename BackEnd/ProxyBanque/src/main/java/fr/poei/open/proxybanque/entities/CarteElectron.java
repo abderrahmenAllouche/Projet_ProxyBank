@@ -4,51 +4,48 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class CarteElectron extends CarteBancaire {
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Client client;
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL)
+	private Client client;
 
-    private String typeCarte = "carte_Electron";
-    private String numCarte;
+	private String typeCarte = "carte_Electron";
 
-    public CarteElectron() {
-        super();
-    }
+	public CarteElectron() {
+		super();
+	}
 
-    public CarteElectron(String typeCarte, Client client) {
-        super(client);
-        this.typeCarte = typeCarte;
-    }
+	public CarteElectron(Client client) {
+		super();
+		this.client = client;
+	}
 
-    public String getTypeCarte() {
-        return typeCarte;
-    }
+	public CarteElectron(String typeCarte, Client client) {
+		this.client = client;
+		this.typeCarte = typeCarte;
+	}
 
-    public void setTypeCarte(String typeCarte) {
-        this.typeCarte = typeCarte;
-    }
+	public String getTypeCarte() {
+		return typeCarte;
+	}
 
-    public Client getClient() {
-        return client;
-    }
+	public void setTypeCarte(String typeCarte) {
+		this.typeCarte = typeCarte;
+	}
 
-    public String getNumCarte() {
-        return numCarte;
-    }
+	public Client getClient() {
+		return client;
+	}
 
-    public void setNumCarte(String numCarte) {
-        this.numCarte = numCarte;
-    }
+	
 
-    @Override
-    public String toString() {
-        return "CarteElectron [client=" + client + ", typeCarte=" + typeCarte + ", numCarte=" + numCarte + "]";
-    }
-
-
-
-
+	@Override
+	public String toString() {
+		return "CarteElectron [client=" + client + ", typeCarte=" + typeCarte + "]";
+	}
 
 }

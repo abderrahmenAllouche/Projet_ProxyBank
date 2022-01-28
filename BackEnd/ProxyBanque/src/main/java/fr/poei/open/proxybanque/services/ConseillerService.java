@@ -27,9 +27,6 @@ public class ConseillerService {
     GerantRepository gerantRepository;
 
     @Autowired
-    ClientService clienService;
-
-    @Autowired
     private UtilisateurRepository utilisateurRepository;
 
 
@@ -81,11 +78,7 @@ public class ConseillerService {
         }
         optionalConseiller = Optional.of(conseillerRepository.save(optionalConseiller.get()));
         if(optionalConseiller.isPresent()) {
-            for (ClientVM clientVM : optionalConseillerDto.get().getClients()) {
-                if (clienService.verficationSiIdExiste(clientVM.getId())) {
-                    assigneClientConseiller(clientVM.getId(), optionalConseiller.get().getId());
-                }
-            }
+
             optionalConseiller = Optional.of(conseillerRepository.save(optionalConseiller.get()));
             if(conseillerRepository.findById(optionalConseiller.get().getId()).isPresent()){
                 return true;
@@ -265,7 +258,8 @@ public class ConseillerService {
 
     public Optional<ConseillerVM> findConseillerByUtilisateurId(String idUtilisateur) {
         Optional<Conseiller> optionalConseiller = this.conseillerRepository.findConseillerByUtilisateur(this.utilisateurRepository.findById(Integer.parseInt(idUtilisateur)).get());
-        Optional<ConseillerVM> conseillerVM = Optional.of(new ConseillerVM(optionalConseiller.get().getId(), optionalConseiller.get().getNom(), null));
+        Optional<ConseillerDto> conseillerDto = findConseillerById(optionalConseiller.get().getId());
+        Optional<ConseillerVM> conseillerVM =Optional.of(new ConseillerVM(conseillerDto.get().getId(),conseillerDto.get().getNom(), conseillerDto.get().getGerant_id()));
         return conseillerVM;
     }
 }

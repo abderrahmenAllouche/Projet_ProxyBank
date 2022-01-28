@@ -5,25 +5,25 @@ public class UserRoleVM {
     private String password;
     private String role;
     private String nom;
+    private String superieurId;
 
     public UserRoleVM() {
     }
 
-    @Override
-    public String toString() {
-        return "UserRoleVM{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", nom='" + nom + '\'' +
-                '}';
-    }
-
-    public UserRoleVM(String username, String password, String role, String nom) {
+    public UserRoleVM(String username, String password, String role, String nom, String superieurId) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.nom = nom;
+        this.superieurId = superieurId;
+    }
+
+    public String getSuperieurId() {
+        return superieurId;
+    }
+
+    public void setSuperieurId(String superieurId) {
+        this.superieurId = superieurId;
     }
 
     public String getUsername() {
@@ -56,5 +56,16 @@ public class UserRoleVM {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    @Override
+    public String toString() {
+        return "UserRoleVM{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", nom='" + nom + '\'' +
+                ", superieurId='" + superieurId + '\'' +
+                '}';
     }
 }

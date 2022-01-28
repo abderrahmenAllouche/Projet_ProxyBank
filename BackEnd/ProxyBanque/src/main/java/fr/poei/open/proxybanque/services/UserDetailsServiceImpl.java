@@ -35,6 +35,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private GerantRepository gerantRepository;
 
+    @Autowired
+    private GerantService gerantService;
+
+    @Autowired
+    private ConseillerService conseillerService;
+
     @Override
     public UserSecDto loadUserByUsername(String username) {
 
@@ -69,14 +75,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 Conseiller conseiller = new Conseiller();
                 conseiller.setNom(userRoleVM.getNom());
                 conseiller.setUtilisateur(utilisateur);
-                this.conseillerRepository.save(conseiller);
+
+                Optional<Gerant> gerant2 = this.gerantRepository.findById(Integer.parseInt(userRoleVM.getSuperieurId()));
+                conseiller.setGerant(gerant2.get());
+                conseiller = this.conseillerRepository.save(conseiller);
+                this.gerantService.assigneConseillerGerant(conseiller.getId(), Integer.parseInt(userRoleVM.getSuperieurId()));
+
                 break;
             case "GERANT":
                 Gerant gerant = new Gerant();
                 gerant.setNom(userRoleVM.getNom());
                 gerant.setUtilisateur(utilisateur);
-                this.gerantRepository.save(gerant);
+                gerant = this.gerantRepository.save(gerant);
+                this.gerantService.assigneAgenceGerant(Integer.parseInt(userRoleVM.getSuperieurId()), gerant.getId());
                 break;
+
             default: break;
         }
 
@@ -90,5 +103,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 utilisateur.getActif(),
                 LocalDate.now(),
                 utilisateur.getTokenSecret());
+    }
+
+    public Optional<List<Utilisateur>> findAllConseiller() {
+        List<Utilisateur> utilisateurs = this.userRepository.findAll();
+        return Optional.of(utilisateurs);
+    }
+
+    public Boolean verifUserName(String username) {
+        Optional<Utilisateur> user = userRepository.findByUsername(username);
+        if(user.isPresent()){
+            if (!user.isEmpty()){
+                return false;
+            }
+        }
+        return true;
+
     }
 }

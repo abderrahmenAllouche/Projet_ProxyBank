@@ -19,9 +19,26 @@ public class ClientDto {
     private Long idConseiller;
     private CompteCourant compteCourant;
     private CompteEpargne compteEpargne;
+    
+    
 
 
-    public ClientDto(Long id, String nom, String preNom, String adresse, Integer tel, Conseiller conseiller, CompteCourant compteCourant, CompteEpargne compteEpargne) {
+    public ClientDto(Long id, String nom, String preNom, String adresse, Integer tel, CarteElectron carteElectron,
+			CarteVisa carteVisa, Long idConseiller, CompteCourant compteCourant, CompteEpargne compteEpargne) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.preNom = preNom;
+		this.adresse = adresse;
+		this.tel = tel;
+		this.carteElectron = carteElectron;
+		this.carteVisa = carteVisa;
+		this.idConseiller = idConseiller;
+		this.compteCourant = compteCourant;
+		this.compteEpargne = compteEpargne;
+	}
+
+	public ClientDto(Long id, String nom, String preNom, String adresse, Integer tel, Conseiller conseiller, CompteCourant compteCourant, CompteEpargne compteEpargne) {
         super();
         this.id = id;
         this.nom = nom;
@@ -117,9 +134,10 @@ public class ClientDto {
     }
 
     @Override
-    public String toString() {
-        return "ClientDto [id=" + id + ", nom=" + nom + ", preNom=" + preNom + ", adresse=" + adresse + ", tel=" + tel
-                + "]";
-    }
+	public String toString() {
+		return "ClientDto [id=" + id + ", nom=" + nom + ", preNom=" + preNom + ", adresse=" + adresse + ", tel=" + tel
+				+ ", carteElectron=" + carteElectron + ", carteVisa=" + carteVisa + ", idConseiller=" + idConseiller
+				+ ", compteCourant=" + compteCourant + ", compteEpargne=" + compteEpargne + "]";
+	}
 
 }

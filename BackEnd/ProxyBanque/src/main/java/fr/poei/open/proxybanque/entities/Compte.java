@@ -11,6 +11,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Compte {
@@ -20,6 +22,7 @@ public abstract class Compte {
     private Long id;
 
     // Cascade sert à corriger l'exception :TransientObjectException
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     private Client client;
 

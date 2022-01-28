@@ -1,5 +1,7 @@
 package fr.poei.open.proxybanque.entities;
 
+import java.time.LocalDate;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -18,17 +23,21 @@ public abstract class CarteBancaire {
     private Long id;
 
     private String typeCarte;
-
+    
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     private Client client;
 
-
+    private String numCarte;
+    
     public CarteBancaire() {
         super();
     }
 
     public CarteBancaire(Client client) {
         super();
+        this.numCarte=  Long.toString(client.getId()) + Integer.toString(LocalDate.now().getYear())
+		+ Integer.toString(LocalDate.now().getMonthValue()) + Integer.toString(LocalDate.now().getDayOfMonth());
         this.client = client;
     }
 
@@ -56,12 +65,21 @@ public abstract class CarteBancaire {
         this.client = client;
     }
 
-    @Override
-    public String toString() {
+    
+    
+    public String getNumCarte() {
+		return numCarte;
+	}
 
-        System.out.println();
-        return "CarteBancaire [id=" + id + "]";
-    }
+	public void setNumCarte(String numCarte) {
+		this.numCarte = numCarte;
+	}
+
+	@Override
+	public String toString() {
+		return "CarteBancaire [id=" + id + ", typeCarte=" + typeCarte + ", client=" + client + ", numCarte=" + numCarte
+				+ "]";
+	}
 
 
 }

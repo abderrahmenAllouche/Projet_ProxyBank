@@ -19,117 +19,94 @@ import fr.poei.open.proxybanque.repositories.ClientRepository;
 @Service
 public class CarteBancaireService {
 
-    @Autowired
-    CarteBancaireRepository carteBancaireRepository;
+	@Autowired
+	CarteBancaireRepository carteBancaireRepository;
 
-    @Autowired
-    ClientRepository clientRepository;
+	@Autowired
+	ClientRepository clientRepository;
 
-    public boolean creerCBVisa(Optional<CarteBancaireDto> carte, Optional<ClientDto> optionalClientDto) {
+	public CarteVisa creerCBVisa(Optional<CarteBancaire> carte, Optional<Client> optionalClient) {
 
-        Optional<Client> optionalClient = clientRepository.findById(optionalClientDto.get().getId());
+		CarteVisa carteVisa = new CarteVisa(carte.get().getTypeCarte(), optionalClient.get());
 
+		String numCarte = Long.toString(optionalClient.get().getId()) + Integer.toString(LocalDate.now().getYear())
+				+ Integer.toString(LocalDate.now().getMonthValue()) + Integer.toString(LocalDate.now().getDayOfMonth());
+		carteVisa.setNumCarte(numCarte);
 
-        Optional<CarteVisa> optionalCarteVisa = Optional.of(new CarteVisa(carte.get().getTypeCarte(), optionalClient.get()));
+		carteVisa = carteBancaireRepository.save(carteVisa);
 
-        String numCarte = Long.toString(optionalClient.get().getId()) + Integer.toString(LocalDate.now().getYear())
-                + Integer.toString(LocalDate.now().getMonthValue()) + Integer.toString(LocalDate.now().getDayOfMonth());
-        optionalCarteVisa.get().setNumCarte(numCarte);
+		optionalClient.get().setCarteVisa(carteVisa);
+		optionalClient.get().setIdCarteBancaire(carteVisa.getId());
+		optionalClient = Optional.of(clientRepository.save(optionalClient.get()));
 
+		return carteVisa;
+	}
 
+	public CarteElectron creerCBElectron(Optional<CarteBancaire> carte, Optional<Client> optionalClient) {
 
-        if (optionalCarteVisa.isPresent() && !optionalCarteVisa.isEmpty()) {
-            optionalCarteVisa = Optional.of(carteBancaireRepository.save(optionalCarteVisa.get()));
-            optionalClient.get().setCarteVisa(optionalCarteVisa.get());
-            optionalClient.get().setIdCarteBancaire(optionalCarteVisa.get().getId());
-            optionalClient = Optional.of(clientRepository.save(optionalClient.get()));
-            if (carteBancaireRepository.findById(optionalCarteVisa.get().getId()).isPresent()) {
-                return true;
-            } else {
-                return false;
-            }
+		CarteElectron carteElectron = new CarteElectron(carte.get().getTypeCarte(), optionalClient.get());
 
-        } else {
-            return false;
-        }
-    }
+		String numCarte = Long.toString(optionalClient.get().getId()) + Integer.toString(LocalDate.now().getYear())
+				+ Integer.toString(LocalDate.now().getMonthValue()) + Integer.toString(LocalDate.now().getDayOfMonth());
+		carteElectron.setNumCarte(numCarte);
 
-    public boolean creerCBElectron(Optional<CarteBancaireDto> carte, Optional<ClientDto> optionalClientDto) {
+		carteElectron = carteBancaireRepository.save(carteElectron);
 
-        Optional<Client> optionalClient = clientRepository.findById(optionalClientDto.get().getId());
+		optionalClient.get().setCarteElectron(carteElectron);
+		optionalClient.get().setIdCarteBancaire(carteElectron.getId());
+		optionalClient = Optional.of(clientRepository.save(optionalClient.get()));
 
-        Optional<CarteElectron> optionalCarteElectron = Optional
-                .of(new CarteElectron(carte.get().getTypeCarte(), optionalClient.get()));
+		return carteElectron;
+	}
 
-        String numCarte = Long.toString(optionalClient.get().getId()) + Integer.toString(LocalDate.now().getYear())
-                + Integer.toString(LocalDate.now().getMonthValue()) + Integer.toString(LocalDate.now().getDayOfMonth());
-        optionalCarteElectron.get().setNumCarte(numCarte);
+	public List<CarteBancaire> findAllCB() {
 
-        if (optionalCarteElectron.isPresent() && !optionalCarteElectron.isEmpty()) {
-            optionalCarteElectron = Optional.of(carteBancaireRepository.save(optionalCarteElectron.get()));
-            optionalClient.get().setCarteElectron(optionalCarteElectron.get());
-            optionalClient.get().setIdCarteBancaire(optionalCarteElectron.get().getId());
-            optionalClient = Optional.of(clientRepository.save(optionalClient.get()));
-            if (carteBancaireRepository.findById(optionalCarteElectron.get().getId()).isPresent()) {
-                return true;
-            } else {
-                return false;
-            }
+		return carteBancaireRepository.findAll();
 
-        } else {
-            return false;
-        }
-    }
+	}
 
-    public List<CarteBancaire> findAllCB() {
+	public Optional<CarteBancaire> findByIdCB(Long idClient) {
+		Optional<List<CarteBancaire>> optionalListCarteBancaire = Optional.of(carteBancaireRepository.findAll());
 
-        return carteBancaireRepository.findAll();
+		if (optionalListCarteBancaire.isPresent() && !optionalListCarteBancaire.isEmpty()) {
+			for (CarteBancaire carteBancaire : optionalListCarteBancaire.get()) {
+				if (carteBancaire.getClient().getId() == idClient) {
 
-    }
+					return Optional.of(carteBancaire);
 
-    public Optional<CarteBancaire> findByIdCB(Long idClient) {
+				}
+			}
 
-        Optional<CarteBancaire> optionalCarteBancaire = carteBancaireRepository.findById(idClient);
+		} else {
+			return Optional.empty();
+		}
+		return Optional.empty();
 
-        if (optionalCarteBancaire.isPresent()) {
-            if (optionalCarteBancaire.get().getTypeCarte() == "Carte_Visa") {
-                return Optional.of(new CarteVisa(optionalCarteBancaire.get().getTypeCarte(),
-                        optionalCarteBancaire.get().getClient()));
-            } else {
-                return Optional.of(new CarteElectron(optionalCarteBancaire.get().getTypeCarte(),
-                        optionalCarteBancaire.get().getClient()));
+	}
 
-            }
-        } else {
-            return Optional.empty();
-        }
+	public boolean deleteCB(Long idClient) {
 
-    }
+		Optional<Client> optionalClient = clientRepository.findById(idClient);
 
-    public boolean deleteCB(Long idClient) {
+		Optional<CarteBancaire> optionalCarteBancaire = carteBancaireRepository
+				.findById(optionalClient.get().getIdCarteBancaire());
+		Long idCarte = optionalClient.get().getIdCarteBancaire();
 
-        Optional<Client> optionalClient = clientRepository.findById(idClient);
+		if (optionalCarteBancaire.get().getTypeCarte().equals("carte_Visa")) {
 
-        Optional<CarteBancaire> optionalCarteBancaire = carteBancaireRepository.findById(optionalClient.get().getIdCarteBancaire());
-        Long idCarte = optionalClient.get().getIdCarteBancaire();
+			optionalClient.get().setIdCarteBancaire(null);
+			optionalClient.get().setCarteVisa(null);
 
-        if(optionalCarteBancaire.get().getTypeCarte().equals("Visa")) {
+			clientRepository.save(optionalClient.get());
 
-            optionalClient.get().setIdCarteBancaire(null);
-            optionalClient.get().setCarteVisa(null);
+			carteBancaireRepository.deleteById(idCarte);
+			return true;
 
-            clientRepository.save(optionalClient.get());
+		} else {
 
-            carteBancaireRepository.deleteById(idCarte);
-            return true;
+			optionalClient.get().setCarteElectron(null);
+			return true;
+		}
 
-        }else{
-
-            optionalClient.get().setCarteElectron(null);
-            return true;
-        }
-
-
-
-    }
+	}
 }

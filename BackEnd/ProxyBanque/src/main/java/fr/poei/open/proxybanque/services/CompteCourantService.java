@@ -25,10 +25,11 @@ public class CompteCourantService {
 
     public CompteCourant creerCompteCourant(CompteCourant CompteCourant, Optional<Client> optionalClient) {
 
-        String numClient = Long.toString(optionalClient.get().getId()) + Integer.toString(LocalDate.now().getYear()) +Integer.toString(LocalDate.now().getMonthValue())+ Integer.toString(LocalDate.now().getDayOfMonth());
+        String numClient = Long.toString(optionalClient.get().getId()) + Integer.toString(LocalDate.now().getYear())
+                + Integer.toString(LocalDate.now().getMonthValue()) + Integer.toString(LocalDate.now().getDayOfMonth());
         CompteCourant.setNumCompte(numClient);
         CompteCourant.setDate(LocalDate.now());
-
+        CompteCourant.setAutorisDecouvert(optionalClient.get().getCompteCourant().getAutorisDecouvert());
 
         return CompteCourant;
 
@@ -53,21 +54,19 @@ public class CompteCourantService {
 
     }
 
-    public boolean modifierCompteCourant(Optional<CompteCourantDto> CompteCourantDto ) {
+    public boolean modifierCompteCourant(Optional<CompteCourantDto> CompteCourantDto) {
 
-        Optional<CompteCourant> optionalCompteCourant = compteCourantRepository.findById(CompteCourantDto.get().getId());
-
-
+        Optional<CompteCourant> optionalCompteCourant = compteCourantRepository
+                .findById(CompteCourantDto.get().getId());
 
         if (optionalCompteCourant.isPresent() && !optionalCompteCourant.isEmpty()) {
 
-            if(CompteCourantDto.get().getSolde() != null) {
+            if (CompteCourantDto.get().getSolde() != null) {
                 optionalCompteCourant.get().setSolde(CompteCourantDto.get().getSolde());
             }
-            if(CompteCourantDto.get().getAutorisDecouvert() != null) {
+            if (CompteCourantDto.get().getAutorisDecouvert() != null) {
                 optionalCompteCourant.get().setAutorisDecouvert(CompteCourantDto.get().getAutorisDecouvert());
             }
-
 
             compteCourantRepository.save(optionalCompteCourant.get());
             return true;
@@ -84,16 +83,22 @@ public class CompteCourantService {
     }
 
     public boolean VerifSoldeSoldeSuffisant(CompteCourantDto compteCourantDto, Long montantVirement) {
-        Boolean result;
+        Boolean result = false;
 
-        if ((compteCourantDto.getSolde() - montantVirement) >= compteCourantDto.getSolde()- compteCourantDto.getAutorisDecouvert()) {
-            result = true;
+        if ((compteCourantDto.getSolde() < montantVirement)) {
+
+            if ((compteCourantDto.getSolde() - montantVirement) >= (0 - compteCourantDto.getAutorisDecouvert())) {
+                result = true;
+
+            } else {
+                result = false;
+            }
+
         } else {
-            result = false;
+            result = true;
         }
 
         return result;
 
     }
-
 }

@@ -288,7 +288,7 @@ public class GerantService {
 
     public Optional<GerantDtos> findGerantByUtilisateurId(String idUtilisateur) {
         Optional<Gerant> optionalGerant = this.gerantRepository.findGerantByUtilisateur(this.utilisateurRepository.findById(Integer.parseInt(idUtilisateur)).get());
-        Optional<GerantDtos> gerantDto = Optional.of(new GerantDtos(optionalGerant.get().getId(), optionalGerant.get().getNom(), null, null));
+        Optional<GerantDtos> gerantDto = findGerantById(optionalGerant.get().getId());
         return gerantDto;
     }
 }

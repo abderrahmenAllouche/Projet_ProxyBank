@@ -140,15 +140,17 @@ public class ClientController {
     @ResponseBody
     public ResponseEntity<?> Virement(@PathVariable("idCompteDebiteur") String idCompteDebiteur,
                                       @PathVariable("idCompteCrediteur") String idCompteCrediteur,
-                                      @RequestBody CompteCourantDto compteCourantDto) {
+                                      @RequestBody MontantTransfertDto montantTransfertDto) {
 
+
+        if(montantTransfertDto.getMontant()<=0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Le montant du virement est inconforme"));
+        }
         if (idCompteDebiteur.matches(regexInteger) && idCompteCrediteur.matches(regexInteger)
-                && compteCourantDto.getSolde().toString().matches(regexInteger)) {
+                && montantTransfertDto.getMontant().toString().matches(regexInteger)) {
 
             boolean compteDebiteurExiste = compteService.existCompteById(Long.parseLong(idCompteDebiteur));
             boolean compteCrediteurExiste = compteService.existCompteById(Long.parseLong(idCompteCrediteur));
-            System.out.println(compteDebiteurExiste);
-            System.out.println(compteCrediteurExiste);
 
             // Verifier si les id existent
             if (!compteDebiteurExiste) {
@@ -161,12 +163,12 @@ public class ClientController {
                 } else {
                     if (compteDebiteurExiste && compteCrediteurExiste) {
 
-                        Boolean result = clientService.virement(Long.parseLong(idCompteDebiteur),
-                                Long.parseLong(idCompteCrediteur), compteCourantDto.getSolde());
+                        Boolean result = clientService.virement(Long.parseLong(idCompteDebiteur),Long.parseLong(idCompteCrediteur), montantTransfertDto.getMontant());
 
                         if (result) {
                             return ResponseEntity.status(HttpStatus.OK).body(new ResponseBodyDto("Le virement est effectué avec succès"));
                         } else {
+
                             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("le solde est insuffisant"));
                         }
                     }
@@ -240,57 +242,57 @@ public class ClientController {
         }
     }
 
-    @PutMapping("/CarteBancaire/{idClient}")
-    @ResponseBody
-    public ResponseEntity<?> CreerCB(@RequestBody Optional<CarteBancaireDto> optionalCarteDto,	@PathVariable("idClient") String idClient) {
-
-        ResponseEntity<ResponseBodyDto> retour = null;
-
-        if (idClient.matches(regexInteger)) {
-            Optional<ClientDto> optionalClientDto = clientService.findClientById(Long.parseLong(idClient));
-            if (optionalClientDto.isPresent() && !optionalClientDto.isEmpty()) {
-                if (!optionalCarteDto.isEmpty()) {
-
-                    if ((optionalClientDto.get().getCarteElectron() == null) || (optionalClientDto.get().getCarteVisa() == null) ){
-
-                        if (optionalCarteDto.get().getTypeCarte().equals("Visa")) {
-
-                            boolean resultat = carteBancaireService.creerCBVisa(optionalCarteDto, optionalClientDto);
-
-                            if (resultat) {
-
-                                retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Carte Visa créee ave succès"));
-                            }
-                        } else if (optionalCarteDto.get().getTypeCarte().equals("Electron")) {
-
-                            boolean resultat = carteBancaireService.creerCBElectron(optionalCarteDto, optionalClientDto);
-
-                            if (resultat) {
-
-                                retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Carte Electron crée ave succès"));
-                            }
-
-                        } else {
-                            retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Type de carte non reconnu"));
-                        }
-
-                    } else {
-                        retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Client a déjà une carte"));
-
-                    }
-                } else {
-                    retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Saisir type de carte à créer"));
-                }
-            }
-
-            else {
-                retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("L'ID saisi n'existe pas!"));
-            }
-        } else {
-            retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("L'ID saisi est invalide !"));
-        }
-        return retour;
-
-    }
+//    @PutMapping("/CarteBancaire/{idClient}")
+//    @ResponseBody
+//    public ResponseEntity<?> CreerCB(@RequestBody Optional<CarteBancaireDto> optionalCarteDto,	@PathVariable("idClient") String idClient) {
+//
+//        ResponseEntity<ResponseBodyDto> retour = null;
+//
+//        if (idClient.matches(regexInteger)) {
+//            Optional<ClientDto> optionalClientDto = clientService.findClientById(Long.parseLong(idClient));
+//            if (optionalClientDto.isPresent() && !optionalClientDto.isEmpty()) {
+//                if (!optionalCarteDto.isEmpty()) {
+//
+//                    if ((optionalClientDto.get().getCarteElectron() == null) || (optionalClientDto.get().getCarteVisa() == null) ){
+//
+//                        if (optionalCarteDto.get().getTypeCarte().equals("Visa")) {
+//
+//                            boolean resultat = carteBancaireService.creerCBVisa(optionalCarteDto, optionalClientDto);
+//
+//                            if (resultat) {
+//
+//                                retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Carte Visa créee ave succès"));
+//                            }
+//                        } else if (optionalCarteDto.get().getTypeCarte().equals("Electron")) {
+//
+//                            boolean resultat = carteBancaireService.creerCBElectron(optionalCarteDto, optionalClientDto);
+//
+//                            if (resultat) {
+//
+//                                retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Carte Electron crée ave succès"));
+//                            }
+//
+//                        } else {
+//                            retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Type de carte non reconnu"));
+//                        }
+//
+//                    } else {
+//                        retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Client a déjà une carte"));
+//
+//                    }
+//                } else {
+//                    retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("Saisir type de carte à créer"));
+//                }
+//            }
+//
+//            else {
+//                retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("L'ID saisi n'existe pas!"));
+//            }
+//        } else {
+//            retour = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseBodyDto("L'ID saisi est invalide !"));
+//        }
+//        return retour;
+//
+//    }
 
 }
